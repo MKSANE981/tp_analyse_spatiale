@@ -55,5 +55,39 @@ commune_francemetro_2021 %>% filter(code==75056)
 # l’import de ce fichier, vous pouvez utiliser la fonction openxlsx::read.xlsx().
 
 
+dep_france_metro_2021 = commune_francemetro_2021 = st_read("Fonds/dep_francemetro_2021.shp",options = "ENCODING=WINDOWS-1252")
 
+Taux_pauvrete_2018 <- read_excel("data/Taux_pauvrete_2018.xlsx")
+
+dep_france_metro_2021 = dep_france_metro_2021 %>% left_join(Taux_pauvrete_2018, by=join_by("code"=="Code"))
+
+## MAPSF
+
+# Export a map with a theme and extra margins
+mf_theme("green")
+# Plot a choropleth map
+mf_map(
+  x = dep_france_metro_2021, var = "Tx_pauvrete", type = "choro",
+  pal = "Dark Mint",
+  breaks = "quantile",
+  nbreaks = 6,
+  leg_title = "Median Income\n(euros)",
+  leg_val_rnd = -2,
+  add = TRUE
+)
+# Start an inset map
+mf_inset_on(x = "worldmap", pos = "right")
+# Plot mtq position on a worldmap
+mf_worldmap(dep_france_metro_2021, col = "#0E3F5C")
+# Close the inset
+mf_inset_off()
+# Plot a title
+mf_title("Wealth in Martinique, 2015")
+# Plot credits
+mf_credits("T. Giraud\nSources: INSEE & IGN, 2018")
+# Plot a scale bar
+mf_scale(size = 5)
+# Plot a north arrow
+mf_arrow("topleft")
+dev.off()
 
