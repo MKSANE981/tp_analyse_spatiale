@@ -59,7 +59,7 @@ library(dplyr)
 
 
 ```{r}
-commune_francemetro_2021<-st_read("data/commune_francemetro_2021.shp",
+commune_francemetro_2021<-st_read("Fonds/commune_francemetro_2021.shp",
   options = "ENCODING=WINDOWS-1252"
 )
 
